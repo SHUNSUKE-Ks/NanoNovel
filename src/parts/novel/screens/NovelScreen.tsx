@@ -1,11 +1,12 @@
 // ============================================
-// NanoNovel - Novel Screen (Refactored with useScenario)
+// NanoNovel - Novel Screen (with Save/Load)
 // ============================================
 
 import { useState, useEffect, useRef } from 'react';
 import { useGameStore } from '@/core/stores/gameStore';
 import { useScenario } from '@/core/hooks';
 import { ChatLog } from '../components/ChatLog';
+import { SaveLoadModal } from '../components/SaveLoadModal';
 import './NovelScreen.css';
 
 export function NovelScreen() {
@@ -25,6 +26,8 @@ export function NovelScreen() {
     // UI State
     const [isAuto, setIsAuto] = useState(false);
     const [isLogOpen, setIsLogOpen] = useState(false);
+    const [isSaveLoadOpen, setIsSaveLoadOpen] = useState(false);
+    const [saveLoadMode, setSaveLoadMode] = useState<'save' | 'load'>('save');
     const autoTimerRef = useRef<number | null>(null);
 
     // Auto-play effect
@@ -73,6 +76,18 @@ export function NovelScreen() {
         setIsAuto(prev => !prev);
     };
 
+    // Open Save modal
+    const openSaveModal = () => {
+        setSaveLoadMode('save');
+        setIsSaveLoadOpen(true);
+    };
+
+    // Open Load modal
+    const openLoadModal = () => {
+        setSaveLoadMode('load');
+        setIsSaveLoadOpen(true);
+    };
+
     if (!currentStory) {
         return <div className="novel-screen">Loading...</div>;
     }
@@ -97,7 +112,12 @@ export function NovelScreen() {
                     >
                         Auto {isAuto && '●'}
                     </button>
-                    <button className="novel-header-btn">Skip</button>
+                    <button className="novel-header-btn" onClick={openSaveModal}>
+                        Save
+                    </button>
+                    <button className="novel-header-btn" onClick={openLoadModal}>
+                        Load
+                    </button>
                     <button className="novel-header-btn" onClick={handleBackToTitle}>
                         Menu
                     </button>
@@ -159,6 +179,13 @@ export function NovelScreen() {
                 logs={logs}
                 isOpen={isLogOpen}
                 onClose={() => setIsLogOpen(false)}
+            />
+
+            {/* Save/Load Modal */}
+            <SaveLoadModal
+                isOpen={isSaveLoadOpen}
+                onClose={() => setIsSaveLoadOpen(false)}
+                initialMode={saveLoadMode}
             />
         </div>
     );

@@ -79,6 +79,16 @@
     animation: glow 2s ease-in-out infinite;
 }
 
+.title-menu .btn-disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+}
+
+.title-menu .btn-disabled:hover {
+    border-color: var(--color-border);
+    box-shadow: none;
+}
+
 /* Decorative elements */
 .title-decoration {
     position: absolute;
