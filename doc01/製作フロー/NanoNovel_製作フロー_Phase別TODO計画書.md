@@ -444,7 +444,7 @@ JSON Schema定義とサンプルデータ作成
 ### 📦 ステップ
 
 #### Step 4.1: BattleManager実装
-- [ ] `src/parts/battle/BattleManager.ts` 作成
+- [x] `src/parts/battle/BattleManager.ts` 作成（BattleScreen内に統合） ✅
   ```typescript
   class BattleManager {
     init(enemyIDs: string[]): void
@@ -456,7 +456,7 @@ JSON Schema定義とサンプルデータ作成
   ```
 
 #### Step 4.2: バトルステート定義
-- [ ] `src/parts/battle/types.ts` 作成
+- [x] `src/parts/battle/types.ts` 作成 ✅（core/typesに統合）
   ```typescript
   interface BattleState {
     player: Combatant;
@@ -467,20 +467,20 @@ JSON Schema定義とサンプルデータ作成
   ```
 
 #### Step 4.3: UI Components作成
-- [ ] `src/parts/battle/components/EnemyDisplay.tsx`
-  - [ ] 敵画像表示
-  - [ ] HPバー
-  - [ ] ステータス表示
-- [ ] `src/parts/battle/components/PlayerStatus.tsx`
-  - [ ] プレイヤーHP/MP
-  - [ ] ステータス表示
-- [ ] `src/parts/battle/components/SkillMenu.tsx`
-  - [ ] スキル一覧
-  - [ ] コスト表示
-  - [ ] 選択イベント
-- [ ] `src/parts/battle/components/BattleLog.tsx`
-  - [ ] 行動ログ表示
-  - [ ] ダメージ表示
+- [x] `src/parts/battle/components/EnemyDisplay.tsx` ✅（BattleScreen内）
+  - [x] 敵画像表示
+  - [x] HPバー
+  - [x] ステータス表示
+- [x] `src/parts/battle/components/PlayerStatus.tsx` ✅（BattleScreen内）
+  - [x] プレイヤーHP/MP
+  - [x] ステータス表示
+- [x] `src/parts/battle/components/SkillMenu.tsx` ✅（BattleScreen内）
+  - [x] スキル一覧
+  - [x] コスト表示
+  - [x] 選択イベント
+- [x] `src/parts/battle/components/BattleLog.tsx` ✅（BattleScreen内）
+  - [x] 行動ログ表示
+  - [x] ダメージ表示
 
 #### Step 4.4: BattleScreen実装
 - [ ] `src/parts/battle/screens/BattleScreen.tsx` 作成

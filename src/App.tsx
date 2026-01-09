@@ -4,6 +4,7 @@
 
 import { useGameStore } from '@/core/stores/gameStore';
 import { TitleScreen, ChapterScreen, NovelScreen } from '@/parts/novel';
+import { BattleScreen } from '@/parts/battle';
 import '@/styles/global.css';
 
 function App() {
@@ -19,7 +20,7 @@ function App() {
       case 'NOVEL':
         return <NovelScreen />;
       case 'BATTLE':
-        return <div className="screen-center"><h2>Battle Screen</h2><p>（実装予定）</p></div>;
+        return <BattleScreen />;
       case 'RESULT':
         return <div className="screen-center"><h2>Result Screen</h2><p>（実装予定）</p></div>;
       case 'GALLERY':
