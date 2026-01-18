@@ -1,11 +1,15 @@
+
 // ============================================
 // NanoNovel - App Component
 // ============================================
 
 import { useGameStore } from '@/core/stores/gameStore';
-import { TitleScreen, ChapterScreen, NovelScreen } from '@/parts/novel';
-import { BattleScreen } from '@/parts/battle';
+import { TitleScreen } from '@/screens/01_Title/TitleScreen';
+import { ChapterScreen } from '@/screens/02_Novel/ChapterScreen';
+import { NovelScreen } from '@/screens/02_Novel/NovelScreen';
+import { BattleScreen } from '@/screens/03_Battle/BattleScreen';
 import '@/styles/global.css';
+import { CollectionScreen } from '@/screens/11_Collection/CollectionScreen';
 
 function App() {
   const currentScreen = useGameStore((state) => state.currentScreen);
@@ -25,8 +29,9 @@ function App() {
         return <div className="screen-center"><h2>Result Screen</h2><p>（実装予定）</p></div>;
       case 'GALLERY':
         return <div className="screen-center"><h2>Gallery Screen</h2><p>（実装予定）</p></div>;
+
       case 'COLLECTION':
-        return <div className="screen-center"><h2>Collection Screen</h2><p>（実装予定）</p></div>;
+        return <CollectionScreen />;
       default:
         return <TitleScreen />;
     }

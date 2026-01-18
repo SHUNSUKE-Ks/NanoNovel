@@ -4,7 +4,7 @@
 
 import { useState, useCallback, useEffect, useMemo } from 'react';
 import { useGameStore } from '@/core/stores/gameStore';
-import scenarioData from '@/data/scenario.json';
+import scenarioData from '@/data/novel/scenario.json';
 import type { Story, Choice } from '@/core/types';
 
 // Type assertion

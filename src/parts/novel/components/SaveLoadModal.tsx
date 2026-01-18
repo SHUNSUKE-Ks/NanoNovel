@@ -1,5 +1,5 @@
 // ============================================
-// NanoNovel - Save/Load Modal Component
+// NanoNovel - Save/Load Modal Component (Overhaul)
 // ============================================
 
 import { useState, useEffect, useCallback } from 'react';
@@ -10,6 +10,9 @@ import {
 } from '@/core/managers/SaveManager';
 import { useGameStore } from '@/core/stores/gameStore';
 import './SaveLoadModal.css';
+
+// Background Image Import
+import bgImage from '@/assets/bg/campfire1.jpg';
 
 type ModalMode = 'save' | 'load';
 
@@ -28,6 +31,7 @@ export function SaveLoadModal({
     const [slots, setSlots] = useState<SaveSlotInfo[]>([]);
     const [confirmSlot, setConfirmSlot] = useState<number | null>(null);
     const [confirmAction, setConfirmAction] = useState<'overwrite' | 'delete' | null>(null);
+    const [selectedSlotConfig, setSelectedSlotConfig] = useState<number>(0);
 
     // Game state
     const { currentStoryID, flags, inventory, setStoryID } = useGameStore();
@@ -65,7 +69,7 @@ export function SaveLoadModal({
     const handleSave = (slot: number) => {
         const slotInfo = slots[slot];
 
-        if (!slotInfo.isEmpty) {
+        if (slotInfo && !slotInfo.isEmpty) {
             setConfirmSlot(slot);
             setConfirmAction('overwrite');
             return;
@@ -81,7 +85,7 @@ export function SaveLoadModal({
             inventory,
             playTime,
             savedAt: new Date().toISOString(),
-            chapterTitle: 'Chapter 1',
+            chapterTitle: '第1章 旅立ちの朝', // Should be dynamic
         };
 
         const success = SaveManager.save(slot, saveData);
@@ -127,105 +131,141 @@ export function SaveLoadModal({
     if (!isOpen) return null;
 
     return (
-        <div className="save-load-overlay" onClick={onClose}>
-            <div className="save-load-modal" onClick={(e) => e.stopPropagation()}>
-                <header className="save-load-header">
-                    <h2 className="save-load-title">
-                        {mode === 'save' ? 'Save Game' : 'Load Game'}
+        <div className="slm-overlay" style={{
+            backgroundImage: `url(${bgImage})`,
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+        }}>
+            {/* Dark tint overlay */}
+            <div className="slm-backdrop"></div>
+
+            <div className="slm-container">
+                <header className="slm-header">
+                    <h2 className="slm-title">
+                        {mode === 'save' ? '冒険の記録をつける' : '冒険を再開する'}
                     </h2>
-                    <button className="save-load-close" onClick={onClose}>
-                        ✕
+                    <div className="slm-tabs">
+                        <button
+                            className={`slm-tab ${mode === 'save' ? 'active' : ''}`}
+                            onClick={() => setMode('save')}
+                        >
+                            Save
+                        </button>
+                        <button
+                            className={`slm-tab ${mode === 'load' ? 'active' : ''}`}
+                            onClick={() => setMode('load')}
+                        >
+                            Load
+                        </button>
+                    </div>
+                    <button className="slm-close" onClick={onClose}>
+                        CLOSE
                     </button>
                 </header>
 
-                <div className="save-load-tabs">
-                    <button
-                        className={`save-load-tab ${mode === 'save' ? 'active' : ''}`}
-                        onClick={() => setMode('save')}
-                    >
-                        Save
-                    </button>
-                    <button
-                        className={`save-load-tab ${mode === 'load' ? 'active' : ''}`}
-                        onClick={() => setMode('load')}
-                    >
-                        Load
-                    </button>
-                </div>
-
-                <div className="save-load-content">
-                    {slots.map((slot) => (
-                        <div
-                            key={slot.slot}
-                            className="save-slot"
-                            onClick={() => mode === 'save'
-                                ? handleSave(slot.slot)
-                                : !slot.isEmpty && handleLoad(slot.slot)
-                            }
-                            style={{
-                                cursor: mode === 'load' && slot.isEmpty ? 'not-allowed' : 'pointer',
-                                opacity: mode === 'load' && slot.isEmpty ? 0.5 : 1,
-                            }}
-                        >
-                            <div className="save-slot-number">
-                                {slot.slot + 1}
+                <div className="slm-content">
+                    {/* List of Save Slots */}
+                    <div className="slm-slot-list">
+                        {slots.map((slot) => (
+                            <div
+                                key={slot.slot}
+                                className={`slm-slot-item ${selectedSlotConfig === slot.slot ? 'selected' : ''}`}
+                                onClick={() => setSelectedSlotConfig(slot.slot)}
+                            >
+                                <span className="slm-slot-number">No.{slot.slot + 1}</span>
+                                <div className="slm-slot-overview">
+                                    {slot.isEmpty ? (
+                                        <span className="text-gray-500">No Data</span>
+                                    ) : (
+                                        <>
+                                            <span className="slm-data-title">{slot.data?.chapterTitle || 'Unknown'}</span>
+                                            <span className="slm-data-date">{SaveManager.formatDate(slot.data!.savedAt)}</span>
+                                        </>
+                                    )}
+                                </div>
                             </div>
+                        ))}
+                    </div>
 
-                            <div className="save-slot-info">
-                                {slot.isEmpty ? (
-                                    <span className="save-slot-empty">
-                                        {mode === 'save' ? 'Empty Slot' : 'No Data'}
-                                    </span>
+                    {/* Detailed Preview of Selected Slot */}
+                    <div className="slm-preview-panel">
+                        {slots[selectedSlotConfig] && (
+                            <div className="slm-preview-content">
+                                <h3 className="slm-preview-header">
+                                    DATA {selectedSlotConfig + 1}
+                                </h3>
+
+                                {slots[selectedSlotConfig].isEmpty ? (
+                                    <div className="slm-empty-state">
+                                        <p>このスロットにはデータがありません</p>
+                                        {mode === 'save' && (
+                                            <button className="slm-action-btn primary" onClick={() => handleSave(selectedSlotConfig)}>
+                                                ここにセーブする
+                                            </button>
+                                        )}
+                                    </div>
                                 ) : (
-                                    <>
-                                        <div className="save-slot-title">
-                                            {slot.data?.chapterTitle || 'Chapter 1'}
+                                    <div className="slm-data-detail">
+                                        <div className="slm-detail-row">
+                                            <span className="label">LOCATION</span>
+                                            <span className="value">始まりの村</span>
                                         </div>
-                                        <div className="save-slot-meta">
-                                            {SaveManager.formatDate(slot.data!.savedAt)} • {SaveManager.formatPlayTime(slot.data!.playTime)}
+                                        <div className="slm-detail-row">
+                                            <span className="label">PLAY TIME</span>
+                                            <span className="value">{SaveManager.formatPlayTime(slots[selectedSlotConfig].data!.playTime)}</span>
                                         </div>
-                                    </>
+                                        <div className="slm-detail-row">
+                                            <span className="label">SCENARIO</span>
+                                            <span className="value">{slots[selectedSlotConfig].data!.storyID}</span>
+                                        </div>
+
+                                        <div className="slm-action-area">
+                                            {mode === 'save' ? (
+                                                <button className="slm-action-btn primary" onClick={() => handleSave(selectedSlotConfig)}>
+                                                    上書きセーブ
+                                                </button>
+                                            ) : (
+                                                <button className="slm-action-btn primary" onClick={() => handleLoad(selectedSlotConfig)}>
+                                                    ロードして再開
+                                                </button>
+                                            )}
+
+                                            <button className="slm-action-btn danger" onClick={(e) => handleDeleteClick(selectedSlotConfig, e)}>
+                                                削除
+                                            </button>
+                                        </div>
+                                    </div>
                                 )}
                             </div>
-
-                            {!slot.isEmpty && (
-                                <div className="save-slot-actions">
-                                    <button
-                                        className="save-slot-delete"
-                                        onClick={(e) => handleDeleteClick(slot.slot, e)}
-                                    >
-                                        Delete
-                                    </button>
-                                </div>
-                            )}
-                        </div>
-                    ))}
+                        )}
+                    </div>
                 </div>
 
+                {/* Confirm Dialog Overlay */}
                 {confirmSlot !== null && (
-                    <div className="save-confirm-overlay">
-                        <div className="save-confirm-dialog">
-                            <p className="save-confirm-text">
+                    <div className="slm-confirm-overlay">
+                        <div className="slm-confirm-box">
+                            <p className="slm-confirm-text">
                                 {confirmAction === 'overwrite'
-                                    ? 'Overwrite this save?'
-                                    : 'Delete this save?'
+                                    ? 'このデータに上書きしてもよろしいですか？'
+                                    : '本当に削除しますか？取り消しはできません。'
                                 }
                             </p>
-                            <div className="save-confirm-buttons">
+                            <div className="slm-confirm-buttons">
                                 <button
-                                    className="save-confirm-btn confirm"
+                                    className="slm-confirm-btn confirm"
                                     onClick={() => confirmAction === 'overwrite'
                                         ? executeSave(confirmSlot)
                                         : executeDelete(confirmSlot)
                                     }
                                 >
-                                    {confirmAction === 'overwrite' ? 'Overwrite' : 'Delete'}
+                                    実行
                                 </button>
                                 <button
-                                    className="save-confirm-btn cancel"
+                                    className="slm-confirm-btn cancel"
                                     onClick={cancelConfirm}
                                 >
-                                    Cancel
+                                    キャンセル
                                 </button>
                             </div>
                         </div>

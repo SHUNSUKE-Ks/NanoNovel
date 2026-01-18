@@ -1,0 +1,138 @@
+/* src/screens/11_Collection/CollectionScreen.css */
+
+.collection-screen {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    width: 100vw;
+    background-color: #111827;
+    /* gray-900 */
+    color: #9ca3af;
+    /* gray-400 */
+    font-family: sans-serif;
+    /* or project font */
+}
+
+/* Primary Navigation */
+.collection-nav-primary {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    /* gap-8 */
+    padding: 0.75rem 1.5rem;
+    /* px-6 py-3 */
+    border-bottom: 1px solid #1f2937;
+    /* border-gray-800 */
+    background-color: #111827;
+}
+
+.nav-item-primary {
+    background: none;
+    border: none;
+    font-size: 0.875rem;
+    /* text-sm */
+    letter-spacing: 0.05em;
+    /* tracking-wider */
+    color: #9ca3af;
+    cursor: pointer;
+    padding-bottom: 0.25rem;
+    transition: color 0.2s;
+}
+
+.nav-item-primary:hover {
+    color: #e5e7eb;
+    /* text-gray-200 */
+}
+
+.nav-item-primary.active {
+    color: #facc15;
+    /* text-yellow-400 */
+    border-bottom: 2px solid #facc15;
+}
+
+/* Secondary Navigation */
+.collection-nav-secondary {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    /* gap-4 */
+    padding: 1rem 1.5rem;
+    /* px-6 py-4 */
+    background-color: #111827;
+}
+
+.nav-item-secondary {
+    padding: 0.5rem 1.5rem;
+    /* px-6 py-2 */
+    border-radius: 9999px;
+    /* rounded-full */
+    font-size: 0.875rem;
+    /* text-sm */
+    font-weight: 500;
+    /* font-medium */
+    cursor: pointer;
+    border: none;
+    transition: all 0.2s;
+}
+
+.nav-item-secondary.inactive {
+    background-color: #1f2937;
+    /* bg-gray-800 */
+    color: #d1d5db;
+    /* text-gray-300 */
+}
+
+.nav-item-secondary.inactive:hover {
+    background-color: #374151;
+    /* bg-gray-700 */
+}
+
+.nav-item-secondary.active {
+    background-color: #ca8a04;
+    /* bg-yellow-600 */
+    color: #111827;
+    /* text-gray-900 */
+}
+
+/* Main Content Area */
+.collection-content {
+    flex: 1;
+    padding: 1.5rem;
+    overflow-y: auto;
+    color: #fff;
+}
+
+.back-button-container {
+    display: flex;
+    justify-content: flex-end;
+    padding: 0 1.5rem;
+}
+
+.back-button {
+    background: transparent;
+    color: #6b7280;
+    border: 1px solid #374151;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.8rem;
+}
+
+.back-button:hover {
+    background: #374151;
+    color: #fff;
+}
+
+.collection-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+}
+
+.collection-title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: #fff;
+    margin: 0;
+}

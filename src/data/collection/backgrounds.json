@@ -1,0 +1,60 @@
+{
+    "schema": "collection.location.v1",
+    "categories": [
+        {
+            "id": "village",
+            "label": "村・町",
+            "color": "#10b981"
+        },
+        {
+            "id": "dungeon",
+            "label": "ダンジョン",
+            "color": "#ef4444"
+        },
+        {
+            "id": "room",
+            "label": "屋内",
+            "color": "#f59e0b"
+        }
+    ],
+    "locations": [
+        {
+            "id": "loc_attic",
+            "name": "古い屋根裏部屋",
+            "category": "room",
+            "description": "埃っぽいが、どこか懐かしい雰囲気の漂う屋根裏部屋。",
+            "images": [
+                "bg/attic1.jpg"
+            ],
+            "tags": [
+                "HOME",
+                "SAFE"
+            ],
+            "region": "始まりの村",
+            "climate": "屋内",
+            "population": "1",
+            "relatedNpcs": [],
+            "relatedEvents": [],
+            "order": 1
+        },
+        {
+            "id": "loc_campfire",
+            "name": "森の焚き火",
+            "category": "dungeon",
+            "description": "冒険の途中で休息を取るための場所。",
+            "images": [
+                "bg/campfire1.jpg"
+            ],
+            "tags": [
+                "OUTDOOR",
+                "DANGER"
+            ],
+            "region": "迷いの森",
+            "climate": "温帯",
+            "population": "0",
+            "relatedNpcs": [],
+            "relatedEvents": [],
+            "order": 2
+        }
+    ]
+}
